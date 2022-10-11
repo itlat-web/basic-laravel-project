@@ -9,7 +9,7 @@ use App\Models\User;
 class PostService
 {
     /**
-     * @param array $data ['title' => 'string', 'slug' => 'string', 'text' => 'string']
+     * @param array $data['title' => 'string', 'slug' => 'string', 'text' => 'string', 'active' => 'bool']
      * @param User $user
      * @return Post
      */
@@ -24,7 +24,7 @@ class PostService
 
     /**
      * @param Post $post
-     * @param array $data['title' => 'string', 'slug' => 'string', 'text' => 'string']
+     * @param array $data['title' => 'string', 'slug' => 'string', 'text' => 'string', 'active' => 'bool']
      * @return void
      */
     public function update(Post $post, array $data): void
