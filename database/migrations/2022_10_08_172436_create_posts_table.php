@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 255);
             $table->string('slug', 255)->unique();
+            $table->string('image', 255);
             $table->longText('text');
             $table->boolean('active');
             $table->bigInteger('user_id')->unsigned()->nullable()->index();

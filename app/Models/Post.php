@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $title
  * @property string $slug
  * @property string $text
+ * @property string $image
  * @property ?int $user_id
  * @property boolean $active
  *
@@ -24,6 +25,7 @@ class Post extends Model
     protected $fillable = [
         'title',
         'text',
+        'image',
         'slug',
         'user_id',
         'active',
@@ -37,6 +39,7 @@ class Post extends Model
         'title'  => 'string',
         'slug'   => 'string',
         'text'   => 'string',
+        'image'  => 'string',
         'active' => 'boolean',
     ];
 
@@ -54,5 +57,21 @@ class Post extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageFullUrl(): string
+    {
+        return sprintf('/storage/images/%s', $this->image);
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageFullPath(): string
+    {
+        return storage_path(sprintf('app/public/images/%s', $this->image));
     }
 }

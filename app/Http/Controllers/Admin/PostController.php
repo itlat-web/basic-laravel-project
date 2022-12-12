@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Post\PostStoreSaveRequest;
-use App\Http\Requests\Admin\Post\PostUpdateSaveRequest;
+use App\Http\Requests\Admin\Post\PostStoreRequest;
+use App\Http\Requests\Admin\Post\PostUpdateRequest;
 use App\Models\Post;
-use App\Services\Admin\PostService;
-use App\Services\Admin\UserService;
+use App\Services\PostService;
+use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -60,10 +60,10 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param PostStoreSaveRequest $request
+     * @param PostStoreRequest $request
      * @return RedirectResponse
      */
-    public function store(PostStoreSaveRequest $request): RedirectResponse
+    public function store(PostStoreRequest $request): RedirectResponse
     {
         $currentUser = $this->userService->getCurrentUser();
         if (!$currentUser || !$currentUser->id) {
@@ -89,11 +89,11 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param PostUpdateSaveRequest $request
+     * @param PostUpdateRequest $request
      * @param Post $post
      * @return RedirectResponse
      */
-    public function update(PostUpdateSaveRequest $request, Post $post): RedirectResponse
+    public function update(PostUpdateRequest $request, Post $post): RedirectResponse
     {
         $this->postService->update($post, $request->validated());
 

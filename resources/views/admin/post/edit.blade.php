@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <form action="{{ route('admin.posts.update', $post) }}" method="POST">
+    <form action="{{ route('admin.posts.update', $post) }}" enctype="multipart/form-data" method="POST">
         @csrf
         @method('PATCH')
         <div class="container">
@@ -46,9 +46,26 @@
                             </div>
 
                             <div class="row mb-3">
+                                <label for="image" class="col-lg-3 col-form-label text-md-end">{{ __('Image') }}</label>
+
+                                <div class="col-lg-6 mb-2">
+                                    <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" autocomplete="off">
+                                    @error('image')
+                                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-lg-6 offset-lg-3">
+                                    <img src="{{ $post->getImageFullUrl() }}" class="img-fluid img-thumbnail rounded" alt="image">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
                                 <label for="text" class="col-lg-3 col-form-label text-md-end">{{ __('Text') }}<span class="text-danger">*</span></label>
                                 <div class="col-lg-6">
-                                    <textarea id="text" type="text" class="form-control @error('text') is-invalid @enderror" name="text" autocomplete="off">{{ old('title', $post->text) }}</textarea>
+                                    <textarea id="text" class="form-control @error('text') is-invalid @enderror" name="text" autocomplete="off">{{ old('title', $post->text) }}</textarea>
                                     @error('text')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

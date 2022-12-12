@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ContactsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +27,11 @@ Route::controller(BlogController::class)->group(function () {
     Route::get('/posts/{post}', 'show')->name('blog.show');
 });
 
+Route::controller(ContactsController::class)->group(function () {
+    Route::get('/contacts', 'index')->name('contacts.index');
+    Route::post('/contacts', 'submit')->name('contacts.submit');
+});
+
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
@@ -40,5 +47,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], static function () {
     Route::group(['middleware' => 'auth'], static function () {
         Route::resource('posts', PostController::class)->except('show');
         Route::resource('users', UserController::class)->except('show');
+        Route::resource('questions', QuestionController::class)->except('show', 'create', 'store');
     });
 });

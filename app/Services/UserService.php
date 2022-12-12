@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services;
 
 
 use App\Models\User;
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class UserService
 {
     /**
-     * @param array $data['name' => 'string', 'email' => 'string', 'password' => 'string']
+     * @param array $data ['name' => 'string', 'email' => 'string', 'password' => 'string']
      * @return User
      */
     public function store(array $data): User
@@ -23,7 +23,7 @@ class UserService
 
     /**
      * @param User $user
-     * @param array $data['name' => 'string', 'email' => 'string', 'password' => 'string|null']
+     * @param array $data ['name' => 'string', 'email' => 'string', 'password' => 'string|null']
      * @return void
      */
     public function update(User $user, array $data): void

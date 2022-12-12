@@ -17,9 +17,10 @@
 
                 <div class="card mt-3">
                     <div class="card-header text-center">
-                        {{ $post->created_at }} | {{ $post->user?->name ?? '...' }}
+                        {{ $post->created_at }}
                     </div>
-                    <div class="card-body p-5">
+                    <div class="card-body p-5 lead">
+                        <img class="float-start img-fluid pe-3" src="{{ $post->getImageFullUrl() }}" alt="image">
                         {!! nl2br($post->text) !!}
                     </div>
                 </div>

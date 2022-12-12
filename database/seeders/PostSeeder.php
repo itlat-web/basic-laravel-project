@@ -4,26 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Post;
 use App\Models\User;
-use App\Services\Admin\PostService;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Services\PostService;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
 {
-    /**
-     * @var PostService
-     */
-    private PostService $postService;
-
-    /**
-     * @param PostService $postService
-     */
-    public function __construct(PostService $postService)
-    {
-        $this->postService = $postService;
-    }
-
-
     /**
      * Run the database seeds.
      *
@@ -35,8 +20,20 @@ class PostSeeder extends Seeder
 
         $user = User::all()->first();
 
+        // create directory for images
+        $imageDirectory = storage_path('app/public/images/');
+        if (!is_dir($imageDirectory)) {
+            mkdir($imageDirectory, 0755, true);
+        }
+
         foreach ($this->getPostsData() as $postsData) {
-            $this->postService->store($postsData, $user);
+            // copy image
+            $imageSrcPath = resource_path('img/' . $postsData['image']);
+            $imageTargetPath = storage_path('app/public/images/' . $postsData['image']);
+            copy($imageSrcPath, $imageTargetPath);
+
+            // create post
+            Post::create($postsData + ['user_id' => $user->id]);
         }
     }
 
@@ -63,7 +60,8 @@ As soon as he saw that piece of wood, Mastro Cherry was filled with joy. Rubbing
 He grasped the hatchet quickly to peel off the bark and shape the wood. But as he was about to give it the first blow, he stood still with arm uplifted, for he had heard a wee, little voice say in a beseeching tone: “Please be careful! Do not hit me so hard!”
 
 What a look of surprise shone on Mastro Cherry’s face! His funny face became still funnier.',
-                'active' => true
+                'active' => true,
+                'image'  => 'pinocchio.jpg'
             ],
             [
                 'title'  => 'Treasure Island',
@@ -73,7 +71,8 @@ What a look of surprise shone on Mastro Cherry’s face! His funny face became s
 Of Silver we have heard no more. That formidable seafaring man with one leg has at last gone clean out of my life; but I dare say he met his old Negress, and perhaps still lives in comfort with her and Captain Flint. It is to be hoped so, I suppose, for his chances of comfort in another world are very small.
 
 The bar silver and the arms still lie, for all that I know, where Flint buried them; and certainly they shall lie there for me. Oxen and wain-ropes would not bring me back again to that accursed island; and the worst dreams that ever I have are when I hear the surf booming about its coasts or start upright in bed with the sharp voice of Captain Flint still ringing in my ears: “Pieces of eight! Pieces of eight!”',
-                'active' => true
+                'active' => true,
+                'image'  => 'treasure-island.jpg'
             ],
             [
                 'title'  => 'Robinson Crusoe',
@@ -83,7 +82,8 @@ The bar silver and the arms still lie, for all that I know, where Flint buried t
 I had two elder brothers, one of whom was lieutenant-colonel to an English regiment of foot in Flanders, formerly commanded by the famous Colonel Lockhart, and was killed at the battle near Dunkirk against the Spaniards. What became of my second brother I never knew, any more than my father or mother knew what became of me.
 
 Being the third son of the family and not bred to any trade, my head began to be filled very early with rambling thoughts. My father, who was very ancient, had given me a competent share of learning, as far as house-education and a country free school generally go, and designed me for the law; but I would be satisfied with nothing but going to sea; and my inclination to this led me so strongly against the will, nay, the commands of my father, and against all the entreaties and persuasions of my mother and other friends, that there seemed to be something fatal in that propensity of nature, tending directly to the life of misery which was to befall me.',
-                'active' => true
+                'active' => true,
+                'image'  => 'robinson-crusoe.jpg',
             ],
             [
                 'title'  => 'Sherlock Holmes',
@@ -93,7 +93,8 @@ Being the third son of the family and not bred to any trade, my head began to be
 “And yet,” said I, smiling, “I cannot quite hold myself absolved from the charge of sensationalism which has been urged against my records.”
 
 “You have erred, perhaps,” he observed, taking up a glowing cinder with the tongs and lighting with it the long cherry-wood pipe which was wont to replace his clay when he was in a disputatious rather than a meditative mood—“you have erred perhaps in attempting to put colour and life into each of your statements instead of confining yourself to the task of placing upon record that severe reasoning from cause to effect which is really the only notable feature about the thing.”',
-                'active' => true
+                'active' => true,
+                'image'  => 'sherlock-holmes.jpg'
             ],
             [
                 'title'  => 'Tom Sawyer',
@@ -103,7 +104,8 @@ Being the third son of the family and not bred to any trade, my head began to be
 "Well, I lay if I get hold of you I\'ll--"
 
 She did not finish, for by this time she was bending down and punching under the bed with the broom, and so she needed breath to punctuate the punches with. She resurrected nothing but the cat.',
-                'active' => true
+                'active' => true,
+                'image'  => 'tom-sawyer.jpg'
             ],
             [
                 'title'  => 'The Jungle Book',
@@ -113,7 +115,8 @@ She did not finish, for by this time she was bending down and punching under the
                 It was the jackal—Tabaqui, the Dish-licker—and the wolves of India despise Tabaqui because he runs about making mischief, and telling tales, and eating rags and pieces of leather from the village rubbish-heaps. But they are afraid of him too, because Tabaqui, more than anyone else in the jungle, is apt to go mad, and then he forgets that he was ever afraid of anyone, and runs through the forest biting everything in his way. Even the tiger runs and hides when little Tabaqui goes mad, for madness is the most disgraceful thing that can overtake a wild creature. We call it hydrophobia, but they call it dewanee—the madness—and run.
 
                 “Enter, then, and look,” said Father Wolf stiffly, “but there is no food here.”',
-                'active' => true
+                'active' => true,
+                'image'  => 'jungle-book.jpg'
             ],
             [
                 'title'  => 'Robin Hood',
@@ -123,7 +126,8 @@ She did not finish, for by this time she was bending down and punching under the
     Not only Robin himself but all the band were outlaws and dwelled apart from other men, yet they were beloved by the country people round about, for no one ever came to jolly Robin for help in time of need and went away again with an empty fist.
 
 And now I will tell how it came about that Robin Hood fell afoul of the law.',
-                'active' => true
+                'active' => true,
+                'image'  => 'robin-hood.jpg'
             ],
             [
                 'title'  => 'Twenty Thousand Leagues under the Sea',
@@ -133,7 +137,8 @@ And now I will tell how it came about that Robin Hood fell afoul of the law.',
 For some time past, vessels had been met by “an enormous thing,” a long object, spindle-shaped, occasionally phosphorescent, and infinitely larger and more rapid in its movements than a whale.
 
 The facts relating to this apparition (entered in various log-books) agreed in most respects as to the shape of the object or creature in question, the untiring rapidity of its movements, its surprising power of locomotion, and the peculiar life with which it seemed endowed.',
-                'active' => true
+                'active' => true,
+                'image'  => '20000.jpg'
             ],
             [
                 'title'  => 'The Wonderful Wizard of Oz',
@@ -143,7 +148,8 @@ The facts relating to this apparition (entered in various log-books) agreed in m
 When Dorothy stood in the doorway and looked around, she could see nothing but the great gray prairie on every side. Not a tree nor a house broke the broad sweep of flat country that reached to the edge of the sky in all directions. The sun had baked the plowed land into a gray mass, with little cracks running through it. Even the grass was not green, for the sun had burned the tops of the long blades until they were the same gray color to be seen everywhere. Once the house had been painted, but the sun blistered the paint and the rains washed it away, and now the house was as dull and gray as everything else.
 
 When Aunt Em came there to live she was a young, pretty wife. The sun and wind had changed her, too. They had taken the sparkle from her eyes and left them a sober gray; they had taken the red from her cheeks and lips, and they were gray also. She was thin and gaunt, and never smiled now. When Dorothy, who was an orphan, first came to her, Aunt Em had been so startled by the child’s laughter that she would scream and press her hand upon her heart whenever Dorothy’s merry voice reached her ears; and she still looked at the little girl with wonder that she could find anything to laugh at.',
-                'active' => true
+                'active' => true,
+                'image'  => 'wizard-of-oz.jpg'
             ],
             [
                 'title'  => 'White Fang',
@@ -153,7 +159,8 @@ When Aunt Em came there to live she was a young, pretty wife. The sun and wind h
 But there was life, abroad in the land and defiant. Down the frozen waterway toiled a string of wolfish dogs. Their bristly fur was rimed with frost. Their breath froze in the air as it left their mouths, spouting forth in spumes of vapour that settled upon the hair of their bodies and formed into crystals of frost. Leather harness was on the dogs, and leather traces attached them to a sled which dragged along behind. The sled was without runners. It was made of stout birch-bark, and its full surface rested on the snow. The front end of the sled was turned up, like a scroll, in order to force down and under the bore of soft snow that surged like a wave before it. On the sled, securely lashed, was a long and narrow oblong box. There were other things on the sled—blankets, an axe, and a coffee-pot and frying-pan; but prominent, occupying most of the space, was the long and narrow oblong box.
 
 In advance of the dogs, on wide snowshoes, toiled a man. At the rear of the sled toiled a second man. On the sled, in the box, lay a third man whose toil was over,—a man whom the Wild had conquered and beaten down until he would never move nor struggle again. It is not the way of the Wild to like movement. Life is an offence to it, for life is movement; and the Wild aims always to destroy movement. It freezes the water to prevent it running to the sea; it drives the sap out of the trees till they are frozen to their mighty hearts; and most ferociously and terribly of all does the Wild harry and crush into submission man—man who is the most restless of life, ever in revolt against the dictum that all movement must in the end come to the cessation of movement.',
-                'active' => true
+                'active' => true,
+                'image'  => 'white-fang.jpg'
             ],
         ];
     }

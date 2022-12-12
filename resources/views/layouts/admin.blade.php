@@ -20,7 +20,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
             <div class="container">
-                <a class="navbar-brand text-uppercase" href="{{ url('/') }}" target="_blank">
+                <a class="navbar-brand" href="{{ url('/') }}" target="_blank">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#admin-menu-main-dropdown" aria-controls="admin-menu-main-dropdown" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -31,10 +31,13 @@
                     <!-- Center Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link {{ str_starts_with(Route::currentRouteName(), 'admin.posts.') ? 'active fw-bold' : '' }} text-uppercase" href="{{ route('admin.posts.index') }}">{{ __('Posts') }}</a>
+                            <a class="nav-link {{ str_starts_with(Route::currentRouteName(), 'admin.posts.') ? 'active fw-bold' : '' }}" href="{{ route('admin.posts.index') }}">{{ __('Posts') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ str_starts_with(Route::currentRouteName(), 'admin.users.') ? 'active fw-bold' : '' }} text-uppercase" href="{{ route('admin.users.index') }}">{{ __('Users') }}</a>
+                            <a class="nav-link {{ str_starts_with(Route::currentRouteName(), 'admin.users.') ? 'active fw-bold' : '' }}" href="{{ route('admin.users.index') }}">{{ __('Users') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ str_starts_with(Route::currentRouteName(), 'admin.questions.') ? 'active fw-bold' : '' }}" href="{{ route('admin.questions.index') }}">{{ __('Questions') }}</a>
                         </li>
                     </ul>
 

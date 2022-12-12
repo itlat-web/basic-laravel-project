@@ -3,11 +3,20 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Post;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        Storage::fake('public');
+    }
+
     public function testUnsuccessfulSimpleGuestVisit(): void
     {
         // posts index page - must be 302 redirect
@@ -243,12 +252,14 @@ class PostTest extends TestCase
                         'title'  => 'First Valid Title',
                         'slug'   => 'first-valid-slug',
                         'text'   => 'First Valid Text',
+                        'image'  => UploadedFile::fake()->image('image.jpg')->mimeType('image/jpeg'),
                         'active' => true
                     ],
                     'valid-update' => [
                         'title'  => 'Updated First Valid Title',
                         'slug'   => 'updated-first-valid-slug',
                         'text'   => 'Updated First Valid Text',
+                        'image'  => UploadedFile::fake()->image('updated-image.png')->mimeType('image/jpeg'),
                         'active' => false
                     ],
                     'invalid-creation' => [
@@ -271,12 +282,14 @@ class PostTest extends TestCase
                         'title'  => 'Title Contains Russian Language - Привет, Мир!',
                         'slug'   => 'slug-contains-numbers-123',
                         'text'   => 'Some Strange Characters - < > ! % abc',
+                        'image'  => UploadedFile::fake()->image('image2.jpg')->mimeType('image/png'),
                         'active' => false
                     ],
                     'valid-update' => [
                         'title'  => 'Updated Title Contains Russian Language - Привет, Мир!',
                         'slug'   => 'updated-slug-contains-numbers-123',
                         'text'   => 'Updated Some Strange Characters - < > ! % abc',
+                        'image'  => UploadedFile::fake()->image('updated-image2.jpg')->mimeType('image/jpeg'),
                         'active' => true
                     ],
                     'invalid-creation' => [

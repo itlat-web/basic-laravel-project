@@ -1,11 +1,20 @@
 <?php
 
 use App\Models\Post;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class BlogTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        Storage::fake('public');
+    }
+
     /**
      * @return void
      */
@@ -61,6 +70,12 @@ class BlogTest extends TestCase
      */
     public function createPost(bool $active): Post
     {
-        return Post::create(['title' => 'Post Title', 'slug' => 'post-slug', 'text' => 'text', 'active' => $active]);
+        return Post::create([
+            'title' => 'Post Title',
+            'slug' => 'post-slug',
+            'text' => 'text',
+            'active' => $active,
+            'image' => UploadedFile::fake()->image('image.jpg')->mimeType('image/jpeg'),
+        ]);
     }
 }
